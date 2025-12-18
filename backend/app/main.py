@@ -1,15 +1,27 @@
-from fastapi import FastAPI
-from .webhook import router as webhook
+from fastapi import FastAPI, Request
+from fastapi.responses import PlainTextResponse
+import os
 
-app = FastAPI(title="Trustra NG")
+app = FastAPI()
 
-# Root endpoint (IMPORTANT)
-@app.get("/")
-def root():
-    return {
-        "status": "Trustra NG Live",
-        "service": "WhatsApp Trust & Escrow API"
-    }
+VERIFY_TOKEN = os.getenv("WHATSAPP_VERIFY_TOKEN", "trustra_verify_123")
 
-# Webhook
-app.include_router(webhook)
+@app.get("/webhook")
+async def verify_webhook(request: Request):
+    params = request.query_params
+
+    mode = params.get("hub.mode")
+    token = params.get("hub.verify_token")
+    challenge = params.get("hub.challenge")
+
+    if mode == "subscribe" and token == VERIFY_TOKEN:
+        return PlainTextResponse(content=challenge, status_code=200)
+
+    return PlainTextResponse(content="Verification failed", status_code=403)
+
+
+@app.post("/webhook")
+async def receive_message(request: Request):
+    payload = await request.json()
+    print(payload)
+    return {"status": "received"}
