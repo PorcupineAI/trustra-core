@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request
-from app.whatsapp import handle_message
+from .whatsapp import handle_message
+
 from app.config import VERIFY_TOKEN
 
 router = APIRouter()
