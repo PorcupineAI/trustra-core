@@ -1,8 +1,15 @@
 from fastapi import FastAPI
-from .admin import router as admin
 from .webhook import router as webhook
 
-app = FastAPI()
+app = FastAPI(title="Trustra NG")
 
-app.include_router(admin)
+# Root endpoint (IMPORTANT)
+@app.get("/")
+def root():
+    return {
+        "status": "Trustra NG Live",
+        "service": "WhatsApp Trust & Escrow API"
+    }
+
+# Webhook
 app.include_router(webhook)
