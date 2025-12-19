@@ -25,3 +25,11 @@ async def receive_message(request: Request):
     payload = await request.json()
     print(payload)
     return {"status": "received"}
+
+@app.get("/")
+def health_check():
+    return {
+        "status": "Trustra NG backend live",
+        "service": "WhatsApp Escrow API",
+        "version": "1.0.0"
+    }
