@@ -1,9 +1,6 @@
-def require_payment(user, action):
-    if user.paid:
-        return True
-
-    if action == "register":
-        raise Exception("Payment required to register")
-
-    if action == "verification":
+def enforce_payment(user, action):
+    if action == "register" and not user.paid:
+        raise Exception("Payment required")
+    if action == "verify" and not user.verified:
         raise Exception("Verification fee required")
+
