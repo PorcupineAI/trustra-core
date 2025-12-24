@@ -1,13 +1,11 @@
-from fastapi import APIRouter, Depends
-from app.database import db
+from fastapi import APIRouter
 
-router = APIRouter(prefix="/admin")
+router = APIRouter()
 
-@router.get("/stats")
-def stats():
+@router.get("/dashboard")
+def admin_dashboard():
     return {
-        "sellers": db.count("sellers"),
-        "buyers": db.count("buyers"),
-        "escrows": db.count("escrows"),
-        "revenue": db.sum("revenue")
+        "status": "healthy",
+        "message": "Trustra-NG Autonomous Core Running"
     }
+
