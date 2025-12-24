@@ -1,7 +1,7 @@
 FREE_SELLERS = 1000
 FREE_BUYERS = 500
 
-def is_free_registration_allowed(role, db):
+def is_free_slot(role, db):
     if role == "seller":
         return db.count("sellers") < FREE_SELLERS
     if role == "buyer":
@@ -10,3 +10,6 @@ def is_free_registration_allowed(role, db):
 
 def registration_fee(role):
     return 2000 if role == "seller" else 1000
+
+def verification_fee():
+    return 500
