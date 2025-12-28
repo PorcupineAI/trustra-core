@@ -1,13 +1,13 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime
+from sqlalchemy import Column, String, Integer, DateTime
+from sqlalchemy.dialects.postgresql import UUID
 from datetime import datetime
+import uuid
 from app.database import Base
 
 class User(Base):
     __tablename__ = "users"
 
-    id = Column(Integer, primary_key=True)
-    phone = Column(String, unique=True)
-    role = Column(String)  # buyer / seller
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    email = Column(String, unique=True, nullable=False)
     trust_score = Column(Integer, default=50)
-    verified = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.utcnow)
