@@ -1,13 +1,13 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
-from sqlalchemy.sql import func
+from sqlalchemy import Column, Integer, Float, String, DateTime
+from datetime import datetime
 from app.database import Base
 
 class Escrow(Base):
     __tablename__ = "escrows"
 
-    id = Column(Integer, primary_key=True, index=True)
-    buyer_id = Column(Integer, ForeignKey("users.id"))
-    seller_id = Column(Integer, ForeignKey("users.id"))
+    id = Column(Integer, primary_key=True)
+    buyer = Column(String)
+    seller = Column(String)
     amount = Column(Float)
-    status = Column(String, default="pending")  # pending | funded | released
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    status = Column(String, default="held")
+    created_at = Column(DateTime, default=datetime.utcnow)
