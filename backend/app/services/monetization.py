@@ -1,11 +1,6 @@
-from app.ai.pricing_engine import adaptive_fee
+def calculate_fee(amount: float):
+    """
+    2% fee, capped at ₦3,000
+    """
+    return min(amount * 0.02, 3000)
 
-FREE_SELLERS = 1000
-FREE_BUYERS = 500
-
-def escrow_fee(amount, trust_score):
-    rate = adaptive_fee(trust_score)
-    return round(amount * rate, 2)
-
-def verification_fee(required):
-    return 1000 if required else 0  # ₦1000 only if flagged
