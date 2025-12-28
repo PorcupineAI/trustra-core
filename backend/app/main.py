@@ -1,13 +1,17 @@
-from dotenv import load_dotenv
-load_dotenv()
 from fastapi import FastAPI
-from app.database import engine, Base
-from app.models import user, escrow, revenue
+from app.database import init_db
+from app.routes import users, escrow, webhook
 
-app = FastAPI(title="Trustra-NG API")
+app = FastAPI(title="Trustra Digital Protocol")
 
-Base.metadata.create_all(bind=engine)
+@app.on_event("startup")
+def startup():
+    init_db()
+
+app.include_router(users.router)
+app.include_router(escrow.router)
+app.include_router(webhook.router)
 
 @app.get("/")
-def root():
-    return {"status": "Trustra-NG backend running"}
+def health():
+    return {"status": "Trustra-NG running"}
