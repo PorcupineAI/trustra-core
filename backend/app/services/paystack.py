@@ -1,6 +1,8 @@
-def init_payment(phone, amount, purpose):
+def initiate_escrow(amount):
+    fee = min(amount * 0.02, 3000)
+    hold_amount = amount + fee
     return {
-        "email": f"{phone}@trustra.ng",
-        "amount": amount * 100,
-        "metadata": {"purpose": purpose}
+        "amount": hold_amount,
+        "fee": fee,
+        "status": "held"
     }
