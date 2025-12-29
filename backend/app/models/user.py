@@ -1,12 +1,13 @@
-from sqlalchemy import Column, String, Boolean, Integer
+from sqlalchemy import Column, String, Integer, Boolean
 from app.database import Base
-import uuid
-from sqlalchemy.dialects.postgresql import UUID
 
 class User(Base):
     __tablename__ = "users"
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    email = Column(String, unique=True, nullable=False)
-    name = Column(String, nullable=False)
+
+    id = Column(String, primary_key=True)
+    email = Column(String, unique=True)
+    phone = Column(String, unique=True)
+    role = Column(String)  # buyer / seller
     trust_score = Column(Integer, default=50)
-    verification_status = Column(Boolean, default=False)
+    verified = Column(Boolean, default=False)
+    trust_badge = Column(String, default="basic")
