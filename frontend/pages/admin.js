@@ -1,34 +1,24 @@
 import { useEffect, useState } from "react";
-import { fetchAPI } from "../lib/api";
+import { getToken } from "../lib/auth";
 
-export default function AdminDashboard() {
-  const [users, setUsers] = useState([]);
+export default function Admin() {
+  const [cases, setCases] = useState([]);
 
   useEffect(() => {
-    fetchAPI("/admin/risk-dashboard").then(setUsers);
+    fetch(`${process.env.NEXT_PUBLIC_API}/admin/risk`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+      .then(res => res.json())
+      .then(setCases);
   }, []);
 
   return (
     <div>
       <h1>Admin Risk Dashboard</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>User</th>
-            <th>Trust</th>
-            <th>Risk</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(u => (
-            <tr key={u.user_id}>
-              <td>{u.user_id}</td>
-              <td>{u.trust_score}</td>
-              <td>{u.risk}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {cases.map(c => (
+        <div key={c.id}>Escrow #{c.id} – ₦{c.amount}</div>
+      ))}
     </div>
   );
 }
+
