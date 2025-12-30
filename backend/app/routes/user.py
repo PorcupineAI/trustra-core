@@ -1,15 +1,8 @@
-from fastapi import APIRouter, Depends
-from app.database import get_db
-from app.intelligence.trust_score import calculate_trust_score
-from app.intelligence.fraud import fraud_flags
+from app.intelligence.predictor import predict_fraud_probability
 
-router = APIRouter(prefix="/users", tags=["Users"])
-
-@router.get("/{user_id}/trust")
-def user_trust(user_id: int, db=Depends(get_db)):
+@router.get("/{user_id}/fraud-risk")
+def fraud_risk(user_id: int, db=Depends(get_db)):
     user = db.query(User).get(user_id)
-
     return {
-        "trust_score": calculate_trust_score(user),
-        "flags": fraud_flags(user)
+        "fraud_probability": predict_fraud_probability(user)
     }
