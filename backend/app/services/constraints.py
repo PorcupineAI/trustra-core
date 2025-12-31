@@ -1,9 +1,6 @@
 # backend/app/services/constraints.py
 from sqlalchemy import CheckConstraint, UniqueConstraint
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import declarative_mixin
-
-Base = declarative_base()
 
 @declarative_mixin
 class UserConstraints:
