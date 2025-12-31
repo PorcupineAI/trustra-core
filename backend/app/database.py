@@ -1,20 +1,19 @@
+# backend/app/database.py
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-from app.config import DATABASE_URL
+from sqlalchemy.orm import sessionmaker
+from app.models.user import User
+from app.models.escrow import Escrow
+from app.models.revenue import Revenue
+from app.models.playing_with_neon import PlayingWithNeon
 
-engine = create_engine(
-    DATABASE_URL,
-    pool_pre_ping=True,
-    pool_size=5,
-    max_overflow=10
-)
+DATABASE_URL = "postgresql://username:password@<your_neon_host>:5432/trustra_ng"
 
-SessionLocal = sessionmaker(bind=engine, autoflush=False)
-Base = declarative_base()
+engine = create_engine(DATABASE_URL)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# Create tables with constraints
+def init_db():
+    User.metadata.create_all(bind=engine)
+    Escrow.metadata.create_all(bind=engine)
+    Revenue.metadata.create_all(bind=engine)
+    PlayingWithNeon.metadata.create_all(bind=engine)
