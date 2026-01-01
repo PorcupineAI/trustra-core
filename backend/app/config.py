@@ -1,6 +1,13 @@
-import os
+from pydantic_settings import BaseSettings
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY")
-WHATSAPP_TOKEN = os.getenv("WHATSAPP_TOKEN")
-VERIFY_TOKEN = os.getenv("VERIFY_TOKEN", "trustra_verify")
+
+class Settings(BaseSettings):
+    DATABASE_URL: str
+    ENV: str = "production"
+
+    class Config:
+        env_file = ".env"
+        extra = "ignore"
+
+
+settings = Settings()
